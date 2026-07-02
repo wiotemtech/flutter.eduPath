@@ -21,6 +21,9 @@ class MyApp extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.all(50.0),
           child: ListView(children:[
+            Text("Welcome to Flutter", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+            SizedBox(height: 60),
+            
 
             Text("Assignment 1", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
             SizedBox(
