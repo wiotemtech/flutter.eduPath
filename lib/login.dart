@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'register.dart';
 
@@ -62,11 +63,8 @@ class _LoginState extends State<Login> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    // Navigate to Register Screen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Register()),
-                    );
+                    // Navigate to Register Screen using Get
+                    Get.to(() => const Register());
                   },
                   child: const Text(
                     'sign up',
@@ -134,7 +132,6 @@ class _LoginState extends State<Login> {
           const SizedBox(height: 24),
           ElevatedButton(
             onPressed: () {
-              // TODO: implement login logic
               final contact = contactController.text;
               final password = passwordController.text;
               debugPrint('Login pressed: $contact / $password');
@@ -153,7 +150,7 @@ class _LoginState extends State<Login> {
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(shape: BoxShape.circle),
                   child: SvgPicture.asset(
-                    'assets/images/apple-logo.png',
+                    'assets/images/logo-apple.svg',
                     width: 24,
                     height: 24,
                   ),
