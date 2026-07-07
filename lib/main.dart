@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
                   backgroundColor: Colors.blue,
                 ),
                 onPressed: () {
-                  Get.to(() => Splashscreen());
+                  Get.to(() => SplashScreen());
                 },
                 child: const Text('Splashscreen: Kenfred'),
               ),
