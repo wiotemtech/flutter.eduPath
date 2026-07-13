@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
+import 'package:dio/dio.dart';
+import 'package:get/get.dart';
 import 'login.dart';
 
 class Register extends StatefulWidget {
@@ -11,6 +12,11 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final dio = Dio();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,6 +96,7 @@ class _RegisterState extends State<Register> {
 
                 SizedBox(height: 24),
                 TextField(
+                  controller: nameController,
                   decoration: InputDecoration(
                     labelText: 'Name',
                     border: OutlineInputBorder(
@@ -100,6 +107,7 @@ class _RegisterState extends State<Register> {
 
                 SizedBox(height: 16),
                 TextField(
+                  controller: emailController,
                   decoration: InputDecoration(
                     labelText: 'Email or Phone',
                     border: OutlineInputBorder(
@@ -110,6 +118,7 @@ class _RegisterState extends State<Register> {
 
                 SizedBox(height: 16),
                 TextField(
+                  controller: passwordController,
                   decoration: InputDecoration(
                     labelText: 'Password',
                     border: OutlineInputBorder(
@@ -126,7 +135,20 @@ class _RegisterState extends State<Register> {
                       height: 50,
                       width: 150,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                            if(nameController.text.isEmpty & emailController.text.isEmpty & passwordController.text.isEmpty){
+                                Get.snackbar("error", "Enter all the fields");
+                            }else{
+                               final response = await dio.post('http://api.cotiafrica.com/register.php',data:{
+                                "name": nameController.text,
+                                "email": emailController.text,
+                                "password": passwordController.text
+                               });
+
+                               print(response.data);
+                            }
+
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFB56BE8),
                           elevation: 0,
