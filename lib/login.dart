@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final TextEditingController contactController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final dio = Dio();
 
   Future<void> openWebsite(String url) async {
     final Uri uri = Uri.parse(url);
@@ -194,10 +196,21 @@ class _LoginState extends State<Login> {
                     height: 44,
                     width: 120,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         final contact = contactController.text;
                         final password = passwordController.text;
                         debugPrint('Login pressed: $contact / $password');
+                        if (contact.isEmpty & password.isEmpty) {
+                          Get.snackbar("error", "Enter all the fields");
+                        } else {
+                          final response = await dio.post(
+                            'http://api.cotiafrica.com/login.php',
+                            data: {"email": contact, "password": password},
+                          );
+
+                          print(response.data);
+                          Get.snackbar("error", response.data['message']);
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFB56BE8),

@@ -146,6 +146,7 @@ class _RegisterState extends State<Register> {
                                });
 
                                print(response.data);
+                               Get.snackbar("error", response.data['message']);
                             }
 
                         },
