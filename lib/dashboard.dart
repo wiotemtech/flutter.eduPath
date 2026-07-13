@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -9,6 +10,18 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
+  final dio = Dio();
+  String results = "";
+
+  void getUsers() async {
+    final response = await dio.get('http://api.cotiafrica.com/users.php');
+    print(response);    
+
+    setState(() {
+       results = response.data.toString();
+    });
+   
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,16 +29,23 @@ class _DashboardState extends State<Dashboard> {
       body: SafeArea(
         child: Column(
           children: [
-          
             const _Header(),
-          
+
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 physics: const BouncingScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
+                    Text(results),
+                    TextButton(
+                      onPressed: () {
+                        getUsers();
+                      },
+                      child: Text("Fetch Users"),
+                    ),
+
                     SizedBox(height: 8),
                     _HeroSection(),
                     SizedBox(height: 24),
@@ -41,7 +61,7 @@ class _DashboardState extends State<Dashboard> {
             ),
           ],
         ),
-      ),    
+      ),
       bottomNavigationBar: _BottomNavBar(
         selectedIndex: _selectedIndex,
         onTap: (index) {
@@ -53,8 +73,6 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 }
-
-
 
 // ==================== HEADER ====================
 class _Header extends StatelessWidget {
@@ -90,10 +108,7 @@ class _Header extends StatelessWidget {
           SizedBox(height: 2),
           Text(
             "Let's plan your future today.",
-            style: TextStyle(
-              fontSize: 14,
-              color: Color(0xFF7A869A),
-            ),
+            style: TextStyle(fontSize: 14, color: Color(0xFF7A869A)),
           ),
         ],
       ),
@@ -301,11 +316,7 @@ class _QuickActionTile extends StatelessWidget {
               color: backgroundColor,
               borderRadius: BorderRadius.circular(16),
             ),
-            child: Icon(
-              icon,
-              size: 26,
-              color: iconColor,
-            ),
+            child: Icon(icon, size: 26, color: iconColor),
           ),
           const SizedBox(height: 6),
           Text(
@@ -335,10 +346,7 @@ class _QuizSuggestion extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFFE8F5E9),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: const Color(0xFFA5D6A7),
-          width: 1,
-        ),
+        border: Border.all(color: const Color(0xFFA5D6A7), width: 1),
       ),
       child: Row(
         children: [
@@ -464,10 +472,7 @@ class _RecentSearchItem extends StatelessWidget {
   final String combo;
   final String daysAgo;
 
-  const _RecentSearchItem({
-    required this.combo,
-    required this.daysAgo,
-  });
+  const _RecentSearchItem({required this.combo, required this.daysAgo});
 
   @override
   Widget build(BuildContext context) {
@@ -502,10 +507,7 @@ class _RecentSearchItem extends StatelessWidget {
               const SizedBox(height: 2),
               Text(
                 daysAgo,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Color(0xFF6A7A94),
-                ),
+                style: const TextStyle(fontSize: 12, color: Color(0xFF6A7A94)),
               ),
             ],
           ),
@@ -532,10 +534,7 @@ class _BottomNavBar extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onTap;
 
-  const _BottomNavBar({
-    required this.selectedIndex,
-    required this.onTap,
-  });
+  const _BottomNavBar({required this.selectedIndex, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -604,7 +603,9 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isSelected ? const Color(0xFF1A3A6B) : const Color(0xFF8A9BB0);
+    final color = isSelected
+        ? const Color(0xFF1A3A6B)
+        : const Color(0xFF8A9BB0);
 
     return GestureDetector(
       onTap: onTap,
@@ -612,11 +613,7 @@ class _NavItem extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            icon,
-            size: 26,
-            color: color,
-          ),
+          Icon(icon, size: 26, color: color),
           const SizedBox(height: 2),
           Text(
             label,
